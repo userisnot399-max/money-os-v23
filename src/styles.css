@@ -54,3 +54,60 @@
 @keyframes brandMaterialize{0%{opacity:0;filter:blur(14px);transform:translateY(10px) scale(.96)}100%{opacity:1;filter:blur(0);transform:translateY(0) scale(1)}}
 @media(max-width:760px){.aurora-canvas{opacity:.88}.glass{backdrop-filter:blur(17px);-webkit-backdrop-filter:blur(17px)}.intro-aura{filter:blur(48px)}}
 @media(prefers-reduced-motion:reduce){.screen-transition,.cinematic-intro:before,.intro-beam,.intro-aura,.intro-brand{animation:none!important}.intro-brand{opacity:1;filter:none;transform:none}.intro-beam{display:none}.cinematic-intro{transition:none}}
+
+
+/* V23.2 visual corrections: visible, continuous aurora on iPhone and desktop */
+.aurora-stage{
+  position:fixed!important;inset:0!important;z-index:0!important;display:block;overflow:hidden;pointer-events:none;
+  isolation:isolate;background:linear-gradient(155deg,#040711 0%,#070d1a 48%,#080b1c 100%);
+}
+.aurora-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:0;display:block;opacity:.72;mix-blend-mode:screen;}
+.aurora-canvas.webgl-unavailable{display:none;}
+.aurora-ribbon{position:absolute;z-index:1;left:-24%;width:148%;height:25vh;min-height:150px;border-radius:50%;pointer-events:none;mix-blend-mode:screen;will-change:transform,opacity;filter:blur(25px);opacity:.42;transform:translate3d(0,0,0);}
+.aurora-ribbon--emerald{top:13%;background:linear-gradient(90deg,transparent 0%,rgba(0,255,163,.04) 12%,rgba(0,255,163,.52) 34%,rgba(0,229,255,.25) 56%,rgba(0,255,163,.13) 72%,transparent 100%);clip-path:polygon(0 45%,12% 30%,24% 48%,37% 16%,50% 40%,64% 22%,78% 49%,91% 25%,100% 40%,100% 78%,88% 63%,74% 82%,60% 58%,46% 85%,32% 58%,18% 78%,0 64%);animation:auroraDriftOne 24s ease-in-out infinite alternate;}
+.aurora-ribbon--cyan{top:29%;height:21vh;background:linear-gradient(90deg,transparent,rgba(0,229,255,.08) 12%,rgba(0,229,255,.48) 38%,rgba(80,150,255,.24) 60%,rgba(0,229,255,.1) 82%,transparent);clip-path:polygon(0 55%,15% 38%,28% 56%,42% 22%,57% 47%,72% 30%,87% 52%,100% 35%,100% 80%,84% 66%,70% 84%,55% 64%,40% 88%,25% 66%,10% 82%,0 70%);animation:auroraDriftTwo 31s ease-in-out infinite alternate;}
+.aurora-ribbon--violet{top:43%;height:22vh;background:linear-gradient(90deg,transparent,rgba(138,43,226,.05) 10%,rgba(138,43,226,.42) 36%,rgba(255,42,133,.23) 62%,rgba(138,43,226,.13) 80%,transparent);clip-path:polygon(0 42%,14% 58%,29% 32%,43% 61%,58% 27%,72% 50%,87% 30%,100% 48%,100% 82%,86% 65%,72% 85%,57% 63%,42% 89%,28% 61%,13% 83%,0 66%);animation:auroraDriftThree 36s ease-in-out infinite alternate;}
+.aurora-ribbon--magenta{top:58%;height:18vh;opacity:.24;background:linear-gradient(90deg,transparent,rgba(255,42,133,.08),rgba(255,42,133,.36) 42%,rgba(138,43,226,.2) 68%,transparent);clip-path:polygon(0 50%,20% 32%,36% 56%,54% 25%,70% 52%,88% 35%,100% 48%,100% 80%,82% 66%,66% 86%,50% 62%,34% 84%,18% 63%,0 76%);animation:auroraDriftFour 42s ease-in-out infinite alternate;}
+@keyframes auroraDriftOne{0%{transform:translate3d(-5%,2%,0) scaleX(.94) skewY(-2deg);opacity:.27}50%{transform:translate3d(2%,-7%,0) scaleX(1.05) skewY(2deg);opacity:.55}100%{transform:translate3d(8%,4%,0) scaleX(.98) skewY(-1deg);opacity:.36}}
+@keyframes auroraDriftTwo{0%{transform:translate3d(7%,2%,0) scaleX(1.02) skewY(2deg);opacity:.28}50%{transform:translate3d(-3%,-5%,0) scaleX(.94) skewY(-2deg);opacity:.5}100%{transform:translate3d(-9%,4%,0) scaleX(1.06) skewY(1deg);opacity:.34}}
+@keyframes auroraDriftThree{0%{transform:translate3d(-7%,0,0) scaleX(1.04);opacity:.2}50%{transform:translate3d(3%,-6%,0) scaleX(.95);opacity:.43}100%{transform:translate3d(9%,3%,0) scaleX(1.03);opacity:.28}}
+@keyframes auroraDriftFour{0%{transform:translate3d(5%,2%,0) scaleX(.96);opacity:.15}100%{transform:translate3d(-8%,-4%,0) scaleX(1.08);opacity:.32}}
+/* Foreground always sits above the single persistent aurora layer. */
+#root{position:relative;z-index:1;isolation:isolate;background:transparent;}
+#root>.aurora-stage{z-index:0!important;}
+#root>.auth-layout,#root>.setup-wrap,#root>.app-frame,#root>.loading-workspace{position:relative;z-index:2;}
+#root>.cinematic-intro{z-index:10001;}
+/* On small screens keep the animated ribbons visible; do not hide them. */
+@media(max-width:760px){
+ .aurora-ribbon{filter:blur(18px);height:20vh;min-height:115px;opacity:.5;}
+ .aurora-ribbon--emerald{top:16%;}.aurora-ribbon--cyan{top:32%;}.aurora-ribbon--violet{top:48%;}.aurora-ribbon--magenta{top:62%;}
+ .aurora-canvas{opacity:.48;}
+ .glass{background:rgba(7,13,27,.48);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);}
+}
+@media(prefers-reduced-motion:reduce){
+ /* Honour the preference with slower movement, not a frozen aurora. */
+ .aurora-ribbon--emerald{animation-duration:90s!important}.aurora-ribbon--cyan{animation-duration:105s!important}.aurora-ribbon--violet{animation-duration:120s!important}.aurora-ribbon--magenta{animation-duration:135s!important}
+}
+
+/* Transaction direction and merchant/category icon system */
+.transaction-icon{width:42px;height:42px;min-width:42px;display:grid;place-items:center;border-radius:14px;overflow:hidden;}
+.transaction-icon.expense{background:rgba(255,42,85,.12);border-color:rgba(255,72,96,.26);color:#ff657d;}
+.transaction-icon.income{background:rgba(0,255,163,.12);border-color:rgba(0,255,163,.26);color:#00e89a;}
+.transaction-icon.transfer{background:rgba(0,229,255,.12);border-color:rgba(0,229,255,.24);color:#55dcff;}
+.transaction-glyph{width:27px;height:27px;display:grid;place-items:center;flex:0 0 27px;border-radius:9px;font-weight:850;line-height:1;}
+.transaction-glyph svg{width:21px;height:21px;display:block;}
+.brand-glyph{font-family:Inter,system-ui,sans-serif;font-size:15px;letter-spacing:-.06em;text-shadow:0 1px 2px #0004;}
+.brand-swiggy{background:#fc8019;color:#fff}.brand-blinkit{background:#f8e600;color:#164b20}.brand-zomato{background:#e23744;color:#fff}.brand-zepto{background:#5d2abf;color:#fff}.brand-instamart{background:#ff7f28;color:#fff}
+.brand-bigbasket{background:#84bd00;color:#fff}.brand-jiomart{background:#0876d1;color:#fff}.brand-dmart{background:#e3312d;color:#fff}
+.brand-amazon{background:#fff;color:#16191f}.brand-flipkart{background:#2874f0;color:#ffe500}.brand-myntra{background:#ff3f6c;color:#fff}.brand-meesho{background:#f43397;color:#fff}
+.brand-uber{background:#fff;color:#111}.brand-ola{background:#d8ff35;color:#15210a}.brand-rapido{background:#ffca05;color:#171717}
+.brand-netflix{background:#171717;color:#e50914}.brand-spotify{background:#1ed760;color:#101010}.brand-youtube{background:#ff0033;color:#fff}.brand-google{background:#fff;color:#4285f4}.brand-apple{background:#dedee2;color:#111}.brand-prime{background:#172d4b;color:#fff}
+.brand-fuel{background:#f2c94c;color:#242424}.brand-airtel{background:#e52332;color:#fff}.brand-jio{background:#0757b8;color:#fff}.brand-vi{background:#ed1c24;color:#fff}
+.glyph-fuel{background:#ffb84d1c;color:#ffbf69}.glyph-grocery{background:#a3e6351c;color:#b7ed66}.glyph-food{background:#fb923c1c;color:#ffad69}.glyph-shopping{background:#c084fc1c;color:#d6a7ff}.glyph-transport{background:#38bdf81c;color:#6dd5ff}.glyph-health{background:#fb71851c;color:#ff91a4}.glyph-bills{background:#facc151c;color:#f8d65d}.glyph-entertainment{background:#e879f91c;color:#ed9cff}.glyph-travel{background:#2dd4bf1c;color:#5de3d2}.glyph-education{background:#818cf81c;color:#a5adff}.glyph-income{background:#00ffa31c;color:#6dffca}.glyph-expense{background:#ff42601c;color:#ff7188}.glyph-transfer{background:#00e5ff1c;color:#74eaff}.glyph-other{background:#94a3b81c;color:#c0cedb}
+.transaction-value{display:flex;align-items:center;justify-content:flex-end;gap:7px;white-space:nowrap;}
+.transaction-direction{font-size:19px;font-weight:800;line-height:1;display:inline-block;}
+.transaction-direction.outgoing{color:#ff536b;text-shadow:0 0 10px rgba(255,65,91,.24);}
+.transaction-direction.incoming{color:#00e99a;text-shadow:0 0 10px rgba(0,255,163,.22);}
+.transaction-direction.transfer{color:#55dcff;}
+.transaction-value.expense{color:#ff7188;}.transaction-value.income{color:#6dffca;}
+@media(max-width:760px){.transaction-icon{width:39px;height:39px;min-width:39px;border-radius:13px}.transaction-glyph{width:25px;height:25px;flex-basis:25px}.transaction-direction{font-size:18px}}
