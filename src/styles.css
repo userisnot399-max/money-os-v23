@@ -111,3 +111,10 @@
 .transaction-direction.transfer{color:#55dcff;}
 .transaction-value.expense{color:#ff7188;}.transaction-value.income{color:#6dffca;}
 @media(max-width:760px){.transaction-icon{width:39px;height:39px;min-width:39px;border-radius:13px}.transaction-glyph{width:25px;height:25px;flex-basis:25px}.transaction-direction{font-size:18px}}
+
+/* V23.2.1: clear account-type iconography */
+.account-icon{flex:0 0 36px;width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(145deg,rgba(0,229,255,.14),rgba(0,255,163,.08));border:1px solid rgba(0,229,255,.16);color:#7cecff}
+.account-icon--credit-card{background:linear-gradient(145deg,rgba(154,120,255,.19),rgba(0,229,255,.08));border-color:rgba(154,120,255,.24);color:#c2aaff}
+.account-icon--wallet{background:linear-gradient(145deg,rgba(0,255,163,.16),rgba(0,229,255,.07));border-color:rgba(0,255,163,.2);color:#72ffd0}
+.account-card-head .account-icon{width:42px;height:42px;flex-basis:42px;border-radius:14px}
+.type-switch button{display:inline-flex;align-items:center;justify-content:center;gap:8px}
