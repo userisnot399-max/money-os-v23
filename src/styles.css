@@ -156,3 +156,229 @@
  .auth-panel .security-note{font-size:10px}
 }
 @media(max-width:390px){.auth-layout{width:calc(100% - 26px);padding-top:20px}.auth-panel{padding:21px 18px}.auth-copy h1{font-size:39px}}
+
+
+/* V23.3 — product-wide visual finish: depth, hierarchy, responsive motion */
+:root{
+  --surface-1:rgba(12,24,39,.82);
+  --surface-2:rgba(9,18,31,.72);
+  --stroke-soft:rgba(174,220,230,.14);
+  --text-primary:#f2fbff;
+  --text-secondary:#9aabba;
+}
+html{scroll-behavior:smooth}
+body{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,.button,.text-action,.sidebar nav button,.mobile-nav button{ -webkit-tap-highlight-color:transparent; }
+button:focus-visible,.button:focus-visible,.text-action:focus-visible{outline:2px solid rgba(0,229,255,.9);outline-offset:3px}
+.app-frame{isolation:isolate}
+.main-content{position:relative}
+.main-content:before{
+  content:"";position:fixed;z-index:-1;pointer-events:none;top:0;right:0;width:min(62vw,900px);height:62vh;
+  background:radial-gradient(ellipse at 72% 12%,rgba(0,255,163,.075),transparent 55%),radial-gradient(ellipse at 42% 25%,rgba(0,160,255,.055),transparent 58%);
+}
+.content-inner{padding-top:clamp(34px,5vw,62px)}
+.screen-transition{animation:pageReveal .48s cubic-bezier(.2,.75,.25,1) both;transform-origin:50% 12%}
+@keyframes pageReveal{from{opacity:0;transform:translate3d(0,13px,0);filter:blur(3px)}to{opacity:1;transform:translate3d(0,0,0);filter:blur(0)}}
+.page-header{position:relative;margin-bottom:clamp(23px,3vw,34px);padding-bottom:18px}
+.page-header:after{content:"";position:absolute;left:0;bottom:0;width:min(190px,34%);height:1px;background:linear-gradient(90deg,rgba(0,255,163,.65),rgba(0,229,255,.18),transparent)}
+.page-header h1{font-weight:720;letter-spacing:-.078em;text-wrap:balance}
+.page-header p{font-size:13px;line-height:1.65;color:#a0b0bf}
+.eyebrow,.panel-kicker{letter-spacing:.145em}
+.glass{
+  border-color:rgba(177,220,235,.13);
+  background:linear-gradient(145deg,rgba(17,34,50,.78),rgba(7,15,28,.76) 72%);
+  box-shadow:0 16px 42px rgba(0,0,0,.19),inset 0 1px 0 rgba(255,255,255,.055);
+  transition:border-color .28s ease,box-shadow .28s ease,transform .28s cubic-bezier(.2,.75,.25,1),background .28s ease;
+}
+.glass:before{opacity:.78;background:linear-gradient(125deg,rgba(0,255,163,.075),transparent 34%,rgba(0,229,255,.055) 72%,rgba(154,120,255,.035))}
+.dashboard-primary>.glass,.dashboard-aside>.glass,.insights-grid>.glass,.accounts-layout>.glass,.settings-grid>.glass{box-shadow:0 18px 48px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.055)}
+@media(hover:hover) and (pointer:fine){
+ .glass:hover{border-color:rgba(111,236,216,.25);box-shadow:0 22px 56px rgba(0,0,0,.24),0 0 28px rgba(0,255,163,.035),inset 0 1px 0 rgba(255,255,255,.07)}
+ .metric:hover,.mini-account:hover,.account-card:hover{transform:translateY(-3px)}
+ .sidebar nav button:hover{background:rgba(255,255,255,.045);border-color:rgba(173,220,235,.12);color:#effffb}
+ .transaction-row:hover{background:linear-gradient(90deg,rgba(0,255,163,.035),transparent);padding-left:7px;padding-right:7px}
+}
+.balance-card{
+  min-height:204px;padding:clamp(22px,3vw,31px);
+  background:radial-gradient(ellipse at 84% 10%,rgba(0,255,163,.16),transparent 38%),linear-gradient(118deg,rgba(7,46,45,.94),rgba(8,25,40,.92) 57%,rgba(31,22,57,.86));
+  border-color:rgba(0,255,190,.2);
+}
+.balance-card:after{
+  content:"";position:absolute;right:-48px;bottom:-130px;width:330px;height:240px;border:1px solid rgba(0,255,190,.15);border-radius:50%;
+  box-shadow:0 0 0 22px rgba(0,255,190,.018),0 0 0 48px rgba(0,229,255,.018),0 0 80px rgba(0,255,163,.08);
+  transform:rotate(-18deg);pointer-events:none;
+}
+.balance-value{font-size:clamp(38px,5.4vw,58px);font-weight:760;letter-spacing:-.065em;text-shadow:0 5px 28px rgba(0,255,163,.12);font-variant-numeric:tabular-nums}
+.balance-meta,.balance-foot{position:relative;z-index:1}
+.balance-meta>span:first-child{font-weight:700}
+.live-pill{padding:6px 9px;border:1px solid rgba(0,255,163,.19);border-radius:99px;background:rgba(0,255,163,.06)}
+.metric-grid{gap:13px}
+.metric{
+  position:relative;overflow:hidden;min-height:124px;padding:20px;
+  background:linear-gradient(145deg,rgba(16,31,47,.88),rgba(8,17,30,.78));
+}
+.metric:after{content:"";position:absolute;right:-26px;top:-35px;width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,rgba(0,229,255,.09),transparent 70%);pointer-events:none}
+.metric>span{font-size:9px;font-weight:700;letter-spacing:.13em}
+.metric>b{font-size:clamp(22px,2.4vw,31px);font-variant-numeric:tabular-nums;line-height:1.12;margin:14px 0 5px}
+.metric small{font-size:10px;letter-spacing:.01em}
+.daily-card,.recent-card,.content-card{padding:clamp(18px,2.2vw,25px)}
+.daily-card{background:linear-gradient(115deg,rgba(11,35,39,.83),rgba(9,20,34,.84))}
+.section-heading{margin-bottom:19px}
+.section-heading h3,.content-card h3,.insight-card h3{font-size:18px;letter-spacing:-.045em;font-weight:680}
+.daily-amount{font-size:clamp(22px,2.5vw,29px);letter-spacing:-.045em;font-variant-numeric:tabular-nums;text-shadow:0 0 20px rgba(0,255,163,.16)}
+.progress-track,.category-track{height:8px;background:rgba(255,255,255,.075);box-shadow:inset 0 1px 3px rgba(0,0,0,.25)}
+.progress-track i,.category-track i{position:relative;overflow:hidden;background:linear-gradient(90deg,#00d68b,#00e5cf 58%,#54d8ff);box-shadow:0 0 18px rgba(0,255,163,.23)}
+.progress-track i:after,.category-track i:after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent,rgba(255,255,255,.32),transparent);transform:translateX(-100%);animation:progressShimmer 3.8s ease-in-out infinite}
+@keyframes progressShimmer{55%,100%{transform:translateX(120%)}}
+.insight-card{min-height:196px;padding:24px;background:radial-gradient(ellipse at 100% 0%,rgba(154,120,255,.14),transparent 52%),linear-gradient(145deg,rgba(23,29,54,.88),rgba(8,17,30,.84));border-color:rgba(154,120,255,.18)}
+.insight-card h3{max-width:270px;font-size:clamp(20px,2.1vw,25px);line-height:1.2;letter-spacing:-.05em;margin:17px 0 10px}
+.insight-card p{font-size:12px;line-height:1.75;color:#a3b1c0}
+.accounts-mini{padding:21px}
+.mini-account{transition:background .2s ease,padding .2s ease;border-radius:11px;padding:12px 8px}
+.mini-account b{font-size:11px}
+.mini-account small,.mini-account>span:last-child{font-size:9px}
+.transaction-row{transition:background .2s ease,padding .2s ease,border-color .2s ease}
+.transaction-main b{font-size:12px;font-weight:650}
+.transaction-main small{font-size:10px}
+.transaction-value{font-size:12px;font-variant-numeric:tabular-nums}
+.transaction-icon{box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
+.filter-grid input,.filter-grid select{min-height:46px;font-size:12px}
+.filter-grid input::placeholder,.field input::placeholder{color:#748899}
+.filter-grid input:focus,.filter-grid select:focus,.field input:focus,.field select:focus{background:rgba(3,13,22,.82)}
+.count-pill{background:rgba(0,255,163,.06)}
+.empty-state{padding:48px 18px;border:1px dashed rgba(163,205,220,.16);border-radius:16px;background:rgba(255,255,255,.012)}
+.empty-state>span{display:inline-grid;place-items:center;width:44px;height:44px;border-radius:15px;background:rgba(0,255,163,.08);box-shadow:0 0 24px rgba(0,255,163,.07)}
+.empty-state b{font-size:13px}
+.empty-state p{font-size:11px;line-height:1.7}
+.insights-grid{gap:17px}
+.category-row{margin:21px 0;grid-template-columns:minmax(95px,135px) minmax(60px,1fr) 38px}
+.category-row>div:first-child b{font-size:11px;font-weight:650}
+.category-row>div:first-child small{font-size:10px}
+.week-chart{height:230px;gap:clamp(8px,2vw,18px)}
+.week-col{gap:10px}
+.week-col i{width:min(34px,70%);border-radius:9px 9px 3px 3px;position:relative;box-shadow:0 0 22px rgba(0,255,163,.14);transition:height .5s cubic-bezier(.2,.75,.25,1),filter .2s ease}
+.week-col b{font:9px/1.3 var(--mono);color:#a8bac7}
+.week-col small{font-size:9px}
+.account-card{padding:22px;background:linear-gradient(145deg,rgba(16,34,51,.9),rgba(8,17,30,.82))}
+.account-card h3{font-size:19px;letter-spacing:-.045em}
+.account-card p{font-size:11px;color:#9aabba}
+.account-balance{border-top:1px solid rgba(255,255,255,.1);padding-top:15px;margin-top:20px}
+.account-balance b{font-size:22px;font-variant-numeric:tabular-nums}
+.account-icon{box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 7px 18px rgba(0,0,0,.12)}
+.settings-grid .content-card{padding:clamp(20px,2.5vw,27px)}
+.settings-grid .content-card p{font-size:12px;line-height:1.75}
+.status-pill{background:rgba(0,255,163,.07)}
+.sidebar{background:linear-gradient(180deg,rgba(5,13,22,.76),rgba(4,10,18,.58));border-right-color:rgba(174,220,235,.11)}
+.sidebar nav button{height:49px;font-size:12px;transition:background .2s ease,border-color .2s ease,color .2s ease,transform .2s ease}
+.sidebar nav button.selected{background:linear-gradient(105deg,rgba(0,255,163,.13),rgba(0,229,255,.055));box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
+.sidebar nav button.selected .nav-icon{color:var(--green)}
+.mobile-nav{background:rgba(4,11,20,.91);border-top:1px solid rgba(174,220,235,.13);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px)}
+.mobile-nav button{transition:color .2s ease,transform .2s ease}
+.mobile-nav button.selected{color:#caffed}
+.mobile-nav button.selected span{filter:drop-shadow(0 0 9px rgba(0,255,163,.42))}
+.button{min-height:48px;border-radius:14px;font-size:11px;letter-spacing:.075em}
+.button.primary{background:linear-gradient(105deg,#00e99a 0%,#00d6c7 55%,#40d8f5 100%);box-shadow:0 8px 25px rgba(0,255,163,.15),inset 0 1px 0 rgba(255,255,255,.24)}
+.button.secondary{background:rgba(255,255,255,.045);border-color:rgba(174,220,235,.17)}
+.text-action{padding:8px 4px}
+.row-actions button{border-radius:8px;transition:background .2s ease,color .2s ease}
+.row-actions button:hover{background:rgba(255,255,255,.055)}
+.toast{border:1px solid rgba(0,255,163,.24);background:rgba(7,24,29,.94);box-shadow:0 16px 50px rgba(0,0,0,.4),0 0 30px rgba(0,255,163,.08);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.modal-backdrop{background:rgba(1,5,11,.76);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.transaction-modal{border-color:rgba(0,255,190,.2);box-shadow:0 32px 100px rgba(0,0,0,.55),0 0 60px rgba(0,255,163,.045)}
+.type-switch{padding:5px;border-radius:14px;background:rgba(255,255,255,.035);border:1px solid rgba(174,220,235,.1)}
+.type-switch button{min-height:40px;border-radius:10px;transition:background .2s ease,color .2s ease,box-shadow .2s ease}
+.type-switch button.active{background:linear-gradient(110deg,rgba(0,255,163,.16),rgba(0,229,255,.1));border:1px solid rgba(0,255,163,.22);color:#dffff4;box-shadow:0 4px 16px rgba(0,255,163,.06)}
+.field input,.field select,.filter-grid input,.filter-grid select{font-size:16px}
+@media(max-width:1100px){
+ .app-frame{grid-template-columns:210px minmax(0,1fr)}
+ .main-content{padding-left:clamp(18px,3vw,34px);padding-right:clamp(18px,3vw,34px)}
+ .dashboard-grid{grid-template-columns:minmax(0,1.35fr) minmax(245px,.8fr)}
+}
+@media(max-width:760px){
+ html,body,#root{min-height:100%;min-height:100dvh}
+ body{overflow-x:hidden}
+ .app-frame{display:block;width:100%;min-height:100dvh;padding-bottom:calc(76px + env(safe-area-inset-bottom))}
+ .sidebar{display:none}
+ .main-content{padding:0 16px 22px}
+ .content-inner{padding-top:18px}
+ .mobile-header{display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:5;margin:0 -16px 23px;padding:calc(11px + env(safe-area-inset-top)) 17px 11px;background:rgba(4,11,20,.78);border-bottom:1px solid rgba(174,220,235,.1);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+ .mobile-header .brand-symbol{width:29px;height:29px}
+ .mobile-header .brand-word{font-size:10px}
+ .mobile-add{width:38px;height:38px;border-radius:13px;border:1px solid rgba(0,255,163,.24);background:rgba(0,255,163,.09);color:#baffdf;font-size:22px}
+ .page-header{align-items:flex-start;flex-direction:column;gap:15px;margin-bottom:21px;padding-bottom:15px}
+ .page-header h1{font-size:clamp(36px,10vw,48px);margin:10px 0 8px}
+ .page-header p{font-size:12px;line-height:1.6;max-width:38ch}
+ .page-header>.button{width:100%}
+ .dashboard-grid,.insights-grid,.accounts-layout,.settings-grid{grid-template-columns:minmax(0,1fr);gap:13px}
+ .dashboard-primary,.dashboard-aside{gap:13px}
+ .dashboard-aside{display:grid}
+ .balance-card{min-height:180px;padding:21px}
+ .balance-value{font-size:clamp(36px,10vw,47px);margin:19px 0 17px}
+ .balance-foot{font-size:7px;letter-spacing:.07em}
+ .metric-grid{gap:10px}
+ .metric{min-height:112px;padding:15px}
+ .metric>span{font-size:8px;line-height:1.45}
+ .metric>b{font-size:clamp(20px,6vw,25px);margin:11px 0 4px}
+ .daily-card,.recent-card,.content-card,.accounts-mini,.insight-card{padding:18px}
+ .section-heading h3,.content-card h3{font-size:16px}
+ .insight-card{min-height:0}
+ .insight-card h3{font-size:21px}
+ .transaction-row{gap:10px;padding:12px 0}
+ .transaction-main b{font-size:11px}
+ .transaction-main small{font-size:9px}
+ .transaction-value{font-size:10px}
+ .filter-grid{grid-template-columns:1fr 1fr;gap:8px}
+ .filter-grid input:first-child{grid-column:1/-1}
+ .filter-grid input,.filter-grid select{min-height:44px;font-size:16px}
+ .category-row{grid-template-columns:minmax(82px,110px) minmax(48px,1fr) 34px;gap:9px}
+ .week-chart{height:205px;gap:6px}
+ .week-col b{font-size:8px}
+ .insight-metrics{grid-column:auto;grid-template-columns:1fr 1fr}
+ .account-list{grid-template-columns:1fr}
+ .account-card{padding:19px}
+ .settings-grid .content-card{padding:19px}
+ .mobile-nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));position:fixed;left:0;right:0;bottom:0;z-index:20;padding:8px 8px calc(8px + env(safe-area-inset-bottom));min-height:66px}
+ .mobile-nav button{min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:0;background:transparent;color:#8296a6;font-size:10px}
+ .mobile-nav button span{display:grid;place-items:center;width:34px;height:27px;border-radius:10px}
+ .mobile-nav button.selected span{background:rgba(0,255,163,.1);color:#9effd2}
+ .mobile-nav button small{font-size:9px}
+ .floating-add{display:none}
+ .app-footer{padding:22px 0 8px;font-size:7px}
+ .toast{left:14px;right:14px;bottom:calc(78px + env(safe-area-inset-bottom));max-width:none;text-align:center}
+ .transaction-modal{width:min(100%,520px);max-height:calc(100dvh - 24px - env(safe-area-inset-top));overflow:auto}
+ .modal-backdrop{align-items:flex-end;padding:12px}
+}
+@media(max-width:390px){
+ .main-content{padding-left:13px;padding-right:13px}
+ .mobile-header{margin-left:-13px;margin-right:-13px;padding-left:14px;padding-right:14px}
+ .metric{padding:13px;min-height:106px}
+ .metric>span{font-size:7.5px}
+ .balance-foot{font-size:6.5px}
+ .daily-amount{font-size:21px}
+ .mobile-nav{padding-left:4px;padding-right:4px}
+}
+@media(min-width:761px) and (max-width:1050px){
+ .app-frame{grid-template-columns:190px minmax(0,1fr)}
+ .sidebar{padding-left:16px;padding-right:12px}
+ .dashboard-grid{grid-template-columns:minmax(0,1fr)}
+ .dashboard-aside{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .insights-grid{grid-template-columns:1fr 1fr}
+ .accounts-layout{grid-template-columns:minmax(250px,.8fr) minmax(0,1.2fr)}
+}
+@media(orientation:landscape) and (max-height:560px) and (max-width:900px){
+ .app-frame{padding-bottom:calc(66px + env(safe-area-inset-bottom))}
+ .mobile-header{position:relative}
+ .mobile-nav{min-height:58px;grid-template-columns:repeat(5,minmax(0,1fr))}
+ .content-inner{padding-top:12px}
+ .page-header{margin-bottom:16px}
+ .page-header h1{font-size:clamp(30px,5vw,42px)}
+ .auth-layout{min-height:100dvh;align-content:center;padding:18px 0;gap:22px}
+ .auth-copy{min-height:0}
+ .auth-copy h1{font-size:clamp(36px,6vw,54px);margin:16px 0 8px}
+ .auth-orbit{width:150px;height:150px}
+}
+@media(prefers-reduced-motion:reduce){
+ html{scroll-behavior:auto}
+ .screen-transition,.glass,.metric,.mini-account,.account-card,.transaction-row,.button,.sidebar nav button,.mobile-nav button,.week-col i{animation:none!important;transition:none!important;filter:none!important}
+ .progress-track i:after,.category-track i:after{display:none}
+}
