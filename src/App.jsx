@@ -21,11 +21,28 @@ function Brand({compact=false}) { return <div className={`brand-lockup ${compact
 function Field({label,children,...props}) { return <label className="field"><span>{label}</span>{React.cloneElement(children,{...props})}</label>; }
 function Button({children,kind='primary',...props}) { return <button className={`button ${kind}`} {...props}>{children}</button>; }
 function Glass({children,className='',...props}) { return <section className={`glass ${className}`} {...props}>{children}</section>; }
-function AuthScreen({onSignIn,onSignUp,busy,message}) {
- const [email,setEmail]=useState(''),[password,setPassword]=useState(''),[mode,setMode]=useState('login');
- return <div className="auth-layout"><div className="auth-copy"><div className="eyebrow"><i className="pulse-dot"/> PERSONAL FINANCIAL OPERATING SYSTEM</div><Brand/><h1>Clarity for<br/><em>every rupee.</em></h1><p>Your financial universe, organised around the way you live. Private by design. Yours to control.</p><div className="auth-orbit"><div/><div/><div/><b>₹</b></div><div className="auth-foot">A MORE INTELLIGENT WAY TO SEE YOUR MONEY</div></div><Glass className="auth-panel"><div className="panel-kicker">SECURE PERSONAL ACCESS</div><h2>{mode==='login'?'Welcome back.':'Create your workspace.'}</h2><p className="muted">{mode==='login'?'Sign in to continue to your private Money OS.':'Start your private financial workspace.'}</p><form onSubmit={e=>{e.preventDefault();mode==='login'?onSignIn(email,password):onSignUp(email,password);}}><Field label="EMAIL ADDRESS"><input type="email" autoComplete="email" inputMode="email" placeholder="you@example.com" value={email} onChange={e=>setEmail(e.target.value)} required/></Field><Field label="PASSWORD"><input type="password" autoComplete={mode==='login'?'current-password':'new-password'} placeholder="At least 8 characters" value={password} onChange={e=>setPassword(e.target.value)} minLength={8} required/></Field><Button disabled={busy} type="submit">{busy?(mode==='login'?'SIGNING IN…':'CREATING…'):(mode==='login'?'ENTER MONEY OS':'CREATE ACCOUNT')} <span>↗</span></Button></form>{message&&<div className="notice">{message}</div>}<div className="auth-switch">{mode==='login'?"New to Money OS?":"Already have an account?"} <button onClick={()=>setMode(mode==='login'?'signup':'login')}>{mode==='login'?'Create account':'Sign in'}</button></div><div className="security-note"><span>◈</span> Your financial data is isolated to your account. Never enter bank passwords, OTPs, PINs or CVVs.</div></Glass></div>;
+function AuthScreen({onSignIn,onSignUp,busy,message,mode,setMode,onClearMessage}) {
+ const [email,setEmail]=useState(''),[password,setPassword]=useState(''),[showPassword,setShowPassword]=useState(false);
+ const creating=mode==='signup';
+ const switchMode=next=>{setMode(next);setPassword('');onClearMessage();};
+ return <div className="auth-layout">
+  <div className="auth-copy"><div className="eyebrow"><i className="pulse-dot"/> PERSONAL FINANCIAL OPERATING SYSTEM</div><Brand/><h1>Clarity for<br/><em>every rupee.</em></h1><p>Your financial universe, organised around the way you live. Private by design. Yours to control.</p><div className="auth-orbit"><div/><div/><div/><b>₹</b></div><div className="auth-foot">A MORE INTELLIGENT WAY TO SEE YOUR MONEY</div></div>
+  <Glass className={`auth-panel auth-panel--${mode}`}>
+   <div className="panel-kicker">{creating?'YOUR PRIVATE WORKSPACE':'SECURE PERSONAL ACCESS'}</div>
+   <h2>{creating?'Create your account.':'Welcome back.'}</h2>
+   <p className="muted">{creating?'A private space to bring your finances into focus.':'Sign in to continue to your personal Money OS.'}</p>
+   <form onSubmit={e=>{e.preventDefault();creating?onSignUp(email.trim(),password):onSignIn(email.trim(),password);}}>
+    <Field label="EMAIL ADDRESS"><input type="email" autoComplete="email" inputMode="email" placeholder="you@example.com" value={email} onChange={e=>setEmail(e.target.value)} required/></Field>
+    <Field label="PASSWORD"><div className="password-control"><input type={showPassword?'text':'password'} autoComplete={creating?'new-password':'current-password'} placeholder={creating?'At least 8 characters':'Enter your password'} value={password} onChange={e=>setPassword(e.target.value)} minLength={8} required/><button type="button" className="password-toggle" onClick={()=>setShowPassword(v=>!v)} aria-label={showPassword?'Hide password':'Show password'}>{showPassword?'HIDE':'SHOW'}</button></div></Field>
+    {creating&&<p className="auth-hint">Use at least 8 characters. Choose a password you do not use elsewhere.</p>}
+    <Button disabled={busy} type="submit">{busy?(creating?'CREATING ACCOUNT…':'SIGNING IN…'):(creating?'CREATE ACCOUNT':'SIGN IN')} <span>↗</span></Button>
+   </form>
+   {message&&<div role="status" aria-live="polite" className={`notice ${/^Your account is created|^Account created/i.test(message)?'notice--success':'notice--error'}`}>{message}</div>}
+   <div className="auth-switch">{creating?'Already have an account?':'New to Money OS?'} <button type="button" onClick={()=>switchMode(creating?'login':'signup')}>{creating?'Sign in':'Create account'}</button></div>
+   <div className="security-note"><span>◈</span> Your financial data is isolated to your account. Never enter bank passwords, OTPs, PINs or CVVs.</div>
+  </Glass>
+ </div>;
 }
-
 function WorkspaceError({message,onRetry,onSignOut}) { return <div className="setup-wrap"><Glass className="setup-panel"><div className="panel-kicker">WORKSPACE CONNECTION</div><h1>We couldn't<br/><em>load your data.</em></h1><p className="muted">Your sign-in is still active. Check your connection and try loading your private workspace again.</p><div className="notice">{message}</div><Button onClick={onRetry}>RETRY CONNECTION</Button><div style={{marginTop:10}}><Button kind="secondary" onClick={onSignOut}>SIGN OUT</Button></div></Glass></div>; }
 
 function Onboarding({step,setStep,state,setState,onDone}) {
@@ -74,7 +91,7 @@ function TransactionModal({open,onClose,onSave,accounts,initial}) {
 }
 
 export default function App() {
- const [user,setUser]=useState(null),[authBusy,setAuthBusy]=useState(false),[authMessage,setAuthMessage]=useState(''),[authReady,setAuthReady]=useState(false);
+ const [user,setUser]=useState(null),[authBusy,setAuthBusy]=useState(false),[authMessage,setAuthMessage]=useState(''),[authReady,setAuthReady]=useState(false),[authMode,setAuthMode]=useState('login');
  const [stage,setStage]=useState('auth'),[setupStep,setSetupStep]=useState(1),[workspaceBusy,setWorkspaceBusy]=useState(false),[cloudStatus,setCloudStatus]=useState('CONNECTING');
  const [state,setState]=useState(emptyState),[page,setPage]=useState('dashboard'),[modal,setModal]=useState(false),[editing,setEditing]=useState(null),[toast,setToast]=useState('');
  const [introVisible,setIntroVisible]=useState(()=>{try{return !localStorage.getItem('moneyos-intro-seen-v1');}catch{return false;}});
@@ -120,8 +137,8 @@ export default function App() {
   syncTimer.current=window.setTimeout(async()=>{try{const client=supabaseRef.current||await getSupabase();if(!client)throw new Error('Supabase is not configured.');supabaseRef.current=client;const {error}=await client.from('personal_state').upsert({user_id:user.id,state,updated_at:new Date().toISOString()},{onConflict:'user_id'});if(error)throw error;setCloudStatus('SYNCED');}catch(e){setCloudStatus('SYNC ISSUE');notify(`Saved on this device. Cloud sync issue: ${e.message}`);}},850);
   return ()=>window.clearTimeout(syncTimer.current);
  },[state,user,stage,notify]);
- const signIn=async(email,password)=>{if(!cloudConfigured)return;setAuthBusy(true);setAuthMessage('');try{const client=await getSupabase();supabaseRef.current=client;const {data,error}=await client.auth.signInWithPassword({email,password});if(error)throw error;if(data.user){setStage('restoring');await loadWorkspace(data.user);}}catch(e){setAuthMessage(e.message);}finally{setAuthBusy(false);}};
- const signUp=async(email,password)=>{if(!cloudConfigured)return;setAuthBusy(true);setAuthMessage('');try{const client=await getSupabase();supabaseRef.current=client;const {data,error}=await client.auth.signUp({email,password});if(error)throw error;if(data.session?.user){setStage('restoring');await loadWorkspace(data.user);}else setAuthMessage('Account created. Check your email to confirm it, then sign in.');}catch(e){setAuthMessage(e.message);}finally{setAuthBusy(false);}};
+ const signIn=async(email,password)=>{if(!cloudConfigured)return;setAuthBusy(true);setAuthMessage('');try{const client=await getSupabase();supabaseRef.current=client;const {data,error}=await client.auth.signInWithPassword({email,password});if(error)throw error;if(data.user){setStage('restoring');await loadWorkspace(data.user);}}catch(e){const m=String(e?.message||'').toLowerCase();setAuthMessage(/invalid login credentials|invalid credentials/.test(m)?'That email and password do not match. Check your details and try again.':/email not confirmed/.test(m)?'Please confirm your email address using the link we sent you, then sign in.':'We couldn’t sign you in right now. Check your connection and try again.');}finally{setAuthBusy(false);}};
+ const signUp=async(email,password)=>{if(!cloudConfigured)return;setAuthBusy(true);setAuthMessage('');try{const client=await getSupabase();supabaseRef.current=client;const {data,error}=await client.auth.signUp({email,password});if(error)throw error;if(data.session?.user){setStage('restoring');await loadWorkspace(data.user);}else{setAuthMode('login');setAuthMessage('Your account is created. Check your inbox for the confirmation link, then sign in.');}}catch(e){const m=String(e?.message||'').toLowerCase();setAuthMessage(/already registered|already exists|user already/.test(m)?'An account with this email may already exist. Try signing in instead.':/password/.test(m)?'Please choose a stronger password with at least 8 characters.':/email/.test(m)?'Please check that your email address is valid and try again.':'We couldn’t create your account right now. Check your details and try again.');}finally{setAuthBusy(false);}};
  const signOut=async()=>{const client=supabaseRef.current||await getSupabase();if(client)await client.auth.signOut();};
  const saveOnboardingAccount=account=>{setState(s=>({...s,accounts:[...s.accounts,account]}));setStage('app');setPage('dashboard');notify('Your Money OS workspace is ready.');};
  const addAccount=account=>{setState(s=>({...s,accounts:[...s.accounts,account]}));notify('Account added.');};
@@ -135,7 +152,7 @@ export default function App() {
  const openEdit=tx=>{setEditing(tx);setModal(true);};
  const content=useMemo(()=>{
   if(!authReady)return <div className="loading-workspace"><div className="loader-orbit"/><b>OPENING MONEY OS</b><small>Restoring your private session…</small></div>;
-  if(stage==='auth')return <AuthScreen onSignIn={signIn} onSignUp={signUp} busy={authBusy} message={authMessage} />;
+  if(stage==='auth')return <AuthScreen mode={authMode} setMode={setAuthMode} onClearMessage={()=>setAuthMessage('')} onSignIn={signIn} onSignUp={signUp} busy={authBusy} message={authMessage} />;
   if(stage==='workspace-error')return <WorkspaceError message={authMessage} onRetry={()=>user&&loadWorkspace(user)} onSignOut={signOut}/>;
   if(stage==='setup')return <Onboarding step={setupStep} setStep={setSetupStep} state={state} setState={setState} onDone={saveOnboardingAccount}/>;
   if(stage!=='app')return <div className="loading-workspace"><div className="loader-orbit"/><b>RESTORING YOUR WORKSPACE</b><small>Connecting your private financial data…</small></div>;
